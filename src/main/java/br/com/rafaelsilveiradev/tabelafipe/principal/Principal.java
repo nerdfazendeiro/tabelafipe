@@ -21,7 +21,17 @@ public class Principal {
         System.out.println("Caminhões");
         System.out.println("Digite o tipo de veiculo que deseja pesquisar: ");
         var tipoVeiculo = leitura.nextLine();
-        var json = consumo.obterDados(ENDERECO + tipoVeiculo + "/marcas");
+        String buscaTipoVeiculos;
+
+        if (tipoVeiculo.toLowerCase().contains("carr")) {
+            buscaTipoVeiculos = ENDERECO + "carros/marcas";
+        } else if (tipoVeiculo.toLowerCase().contains("mot")){
+            buscaTipoVeiculos = ENDERECO + "motos/marcas";
+        } else {
+            buscaTipoVeiculos = ENDERECO + "caminhoes/marcas";
+        }
+
+        var json = consumo.obterDados(buscaTipoVeiculos);
         var dados = conversor.obterLista(json, DadosVeiculos.class);
         dados.stream()
                 .sorted(Comparator.comparing(DadosVeiculos::codigo))
