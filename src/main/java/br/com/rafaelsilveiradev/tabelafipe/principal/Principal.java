@@ -1,6 +1,7 @@
 package br.com.rafaelsilveiradev.tabelafipe.principal;
 
 import br.com.rafaelsilveiradev.tabelafipe.model.DadosVeiculos;
+import br.com.rafaelsilveiradev.tabelafipe.model.Modelos;
 import br.com.rafaelsilveiradev.tabelafipe.services.ConsumoAPI;
 import br.com.rafaelsilveiradev.tabelafipe.services.ConverteDados;
 
@@ -32,10 +33,26 @@ public class Principal {
         }
 
         var json = consumo.obterDados(buscaTipoVeiculos);
-        var dados = conversor.obterLista(json, DadosVeiculos.class);
-        dados.stream()
+        var marcas = conversor.obterLista(json, DadosVeiculos.class);
+        marcas.stream()
                 .sorted(Comparator.comparing(DadosVeiculos::codigo))
                 .forEach(System.out::println);
+
+        System.out.println("Digite o codigo da marca que deseja exibir os veiculos: ");
+        var codigoMarca = leitura.nextLine();
+
+        var buscaCodigoMarca = buscaTipoVeiculos + "/" + codigoMarca + "/modelos";
+        json = consumo.obterDados(buscaCodigoMarca);
+        var modeloLista = conversor.obterDados(json, Modelos.class);
+
+        System.out.println("\nModelos dessa Marca: ");
+        modeloLista.modelos().stream()
+                .sorted(Comparator.comparing(DadosVeiculos::codigo))
+                .forEach(System.out::println);
+
+
+
+
 
     }
 }
